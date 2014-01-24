@@ -22,7 +22,7 @@ cf prompts you to choose one of the available service offerings, and then ask yo
 
 ### Binding Your SendGrid Service
 
-After creating a new SendGrid service, you can use the cf services command to list all available service instances that you have created.
+After creating a new SendGrid service, you can use the _cf services_ command to list all available service instances that you have created:
 
 ```
 $ cf services
