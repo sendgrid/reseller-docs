@@ -188,7 +188,7 @@ $ cf push --command 'node index.js'
 You can use the following sample applications:
 
 *   Ruby on Rails: [https://github.com/cloudfoundry-samples/sendgrid-cloudfoundry-rails](https://github.com/cloudfoundry-samples/sendgrid-cloudfoundry-rails)
-*   Node.js: https://github.com/scottmotte/sendgrid-nodejs-example](https://github.com/scottmotte/sendgrid-nodejs-example) with the above changes
+*   Node.js: [https://github.com/scottmotte/sendgrid-nodejs-example](https://github.com/scottmotte/sendgrid-nodejs-example) with the above changes
 
 These applications demonstrate how to connect to our services and insert or retrieve data.
 
