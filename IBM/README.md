@@ -141,27 +141,33 @@ sendgrid.send({
 });
 ```
 
-The code listed above firstly checks whether the VCAP_SERVICES environment variable exists
+When you push your app on IBM the server will automaticly install the sendgrid dependency. The code listed above firstly checks whether the VCAP_SERVICES environment variable exists, if not it will put a dummy user and password.
 
 ### 3. Java
 
-To use SendGrid with Java you first need to add [our library](https://github.com/sendgrid/sendgrid-java#via-copypaste) in your project.
+To use SendGrid with Java you first need to add [our library](https://github.com/sendgrid/sendgrid-java#via-copypaste) in your project. You can download jar file here [sendgrid-0.1.2-jar.jar](https://github.com/sendgrid/sendgrid-java/blob/master/repo/com/github/sendgrid/0.1.2/sendgrid-0.1.2-jar.jar?raw=true)
 
 After which you can get the credentials from VCAP_SERVICES and use our library to send emails:
 
 ```Java
-JSONObject sendgridJson = new JSONObject(System.getenv("VCAP_SERVICES"));
-JSONObject sendgridCredentials = sendgridJson.getJSONArray("SendGrid-1.0.0")
-  .getJSONObject(0).getJSONObject("credentials");
-String username = sendgridCredentials.getString("SENDGRID_USERNAME");
-String password = sendgridCredentials.getString("SENDGRID_PASSWORD");
-         
-SendGrid sendgrid = new SendGrid(username, password);
-sendgrid.addTo("example@example.com");
-sendgrid.setFrom("other@example.com");
-sendgrid.setSubject("Hello World");
-sendgrid.setText("My first email through SendGrid / IBM");
-sendgrid.send();
+try
+{
+  JSONObject sendgridJson = new JSONObject(System.getenv("VCAP_SERVICES"));
+  JSONObject sendgridCredentials = sendgridJson.getJSONArray("SendGridDemo-1.0.0")
+          .getJSONObject(0).getJSONObject("credentials");
+  String username = sendgridCredentials.getString("SENDGRID_USERNAME");
+  String password = sendgridCredentials.getString("SENDGRID_PASSWORD");
+  SendGrid sendgrid = new SendGrid(username, password);
+  sendgrid.addTo("example@example.com");
+  sendgrid.setFrom("other@example.com");
+  sendgrid.setSubject("Hello World");
+  sendgrid.setText("My first email through SendGrid / IBM");
+  sendgrid.send();
+}
+catch (Exception e)
+{
+  e.printStackTrace();
+}
 ```
 
 ### Pushing your application to SmartCloud
@@ -189,6 +195,7 @@ You can use the following sample applications:
 
 *   Ruby on Rails: [https://github.com/cloudfoundry-samples/sendgrid-cloudfoundry-rails](https://github.com/cloudfoundry-samples/sendgrid-cloudfoundry-rails)
 *   Node.js: [https://github.com/scottmotte/sendgrid-nodejs-example](https://github.com/scottmotte/sendgrid-nodejs-example)
+*   Java: [https://ace.ng.bluemix.net/rest/templates/javaHelloWorld/download/javaHelloWorld](https://ace.ng.bluemix.net/rest/templates/javaHelloWorld/download/javaHelloWorld)
 
 These applications demonstrate how to connect to our services and insert or retrieve data.
 
