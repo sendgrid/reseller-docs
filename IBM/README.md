@@ -1,6 +1,6 @@
 ### Managing Services
 
-To create and bind a new SendGrid service, see [Managing Services from the Command Line](https://ace.ng.bluemix.net/docs/QuickStart.jsp).
+To create and bind a new SendGrid service, see [Using services](http://www.ng.bluemix.net/docs/BuildingWeb.jsp#use-service).
 
 ### Creating a SendGrid Service
 
