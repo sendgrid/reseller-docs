@@ -34,7 +34,7 @@ Bind your SendGrid service to your app, using the following command:
 $ cf bind-service [service-name] [app-name]
 ```
 
-The service name should match the one you provisioned above and the app name should be an existing IBM SmartCloud app.
+The service name should match the one you provisioned above and the app name should be an existing IBM BlueMix app.
 Once SendGrid has been added a username and password will be available. These are the credentials you use to access the newly provisioned SendGrid service instance.
 
 OR
