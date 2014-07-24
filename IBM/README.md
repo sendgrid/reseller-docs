@@ -1,24 +1,16 @@
 ### Managing Services
 
-To create and bind a new SendGrid service, see [Using services](http://www.ng.bluemix.net/docs/BuildingWeb.jsp#use-service).
+To create and bind a new SendGrid service, see [Using services](https://www.ng.bluemix.net/docs/#starters/BuildingWeb.html#install_cf).
 
 ### Creating a SendGrid Service
 
 SendGrid can be provisioned with the following command:
 
 ```
-$ cf create-service sendgrid [service-name] [plan-level]
+$ cf create-service sendgrid [plan-level] [service-name]
 ```
 
 The service name can be anything you want and the plan level is one of these options: free.
-
-OR
-
-```
-$ cf create-service
-```
-
-cf prompts you to choose one of the available service offerings, and then ask you for a unique instance name and the plan for the service. It will present you with a random name but you can change it if you want.
 
 ### Binding Your SendGrid Service
 
@@ -31,19 +23,11 @@ $ cf services
 Bind your SendGrid service to your app, using the following command:
 
 ```
-$ cf bind-service [service-name] [app-name]
+$ cf bind-service [app-name] [service-name]
 ```
 
 The service name should match the one you provisioned above and the app name should be an existing IBM BlueMix app.
 Once SendGrid has been added a username and password will be available. These are the credentials you use to access the newly provisioned SendGrid service instance.
-
-OR
-
-```
-$ cf bind-service
-```
-
-You need to select one of the applications and one of the services from the list. Once the binding action succeed, cf will return a message to you.
 
 ### Using SendGrid within your Application
 
@@ -51,14 +35,15 @@ Once a SendGrid service instance has been bound to your application, the VCAP_SE
 
 ```
 {
-   "SendGrid-1.0.0": [
+   "sendgrid": [
       {
          "name": "SendGrid-paxza",
-         "label": "SendGrid-1.0.0",
+         "label": "sendgrid",
+         "plan": "plan",
          "credentials": {
-            "SENDGRID_USERNAME": "edc4c53c286825a2e600a28f9efdc1cd",
-            "SENDGRID_PASSWORD": "Z2qwbS1EB1",
-            "SENDGRID_SMTP_HOST": "smtp.sendgrid.net"
+            "username": "edc4c53c286825a2e600a28f9efdc1cd",
+            "password": "Z2qwbS1EB1",
+            "hostname": "smtp.sendgrid.net"
          }
       }
    ]
@@ -67,9 +52,9 @@ Once a SendGrid service instance has been bound to your application, the VCAP_SE
 
 As you can see, the VCAP_SERVICE environment variable includes the following items:
 
-*   SENDGRID_USERNAME: The username of the SendGrid account
-*   SENDGRID_PASSWORD: The password of the SendGrid account
-*   SENDGRID_SMTP_HOST: The host of the SendGrid smtp host
+*   username: The username of the SendGrid account
+*   password: The password of the SendGrid account
+*   hostname: The host of the SendGrid smtp host
 
 You can use the following code snippet to obtain the service credential information and connect to the SendGrid instance:
 
@@ -81,7 +66,7 @@ Add this to the config/envirorment.rb:
 credentials = host = username = password = ''
 if !ENV['VCAP_SERVICES'].blank?
   JSON.parse(ENV['VCAP_SERVICES']).each do |k,v|
-    if !k.scan("SendGrid").blank?
+    if !k.scan("sendgrid").blank?
       credentials = v.first.select {|k1,v1| k1 == "credentials"}["credentials"]
       host = credentials["hostname"]
       username = credentials["username"]
@@ -110,7 +95,7 @@ To use SendGrid with Node.js you first need to add our library to your dependenc
 ```
 "dependencies": {
  ...
- "sendgrid": "1.0.0-rc.1.0",
+ "sendgrid": "1.1.1",
  ...
 }
 ```  
@@ -120,16 +105,16 @@ After which you can get the credentials from VCAP_SERVICES and use our library t
 ```JavaScript
 if (process.env.VCAP_SERVICES) {
     var env = JSON.parse(process.env.VCAP_SERVICES);
-    var credentials = env['SendGrid-1.0.0'][0].credentials;
+    var credentials = env['sendgrid'][0].credentials;
 } else {
     var credentials = {
-        "SENDGRID_SMTP_HOST": "smtp.sendgrid.net",
-        "SENDGRID_USERNAME" : "user1",
-        "SENDGRID_PASSWORD" : "secret"
+        "hostname": "smtp.sendgrid.net",
+        "username" : "user1",
+        "password" : "secret"
     }
 };
  
-var sendgrid  = require('sendgrid')(credentials.SENDGRID_USERNAME, credentials.SENDGRID_PASSWORD);
+var sendgrid  = require('sendgrid')(credentials.username, credentials.password);
 sendgrid.send({
   to:       'example@example.com',
   from:     'other@example.com',
@@ -153,10 +138,10 @@ After which you can get the credentials from VCAP_SERVICES and use our library t
 try
 {
   JSONObject sendgridJson = new JSONObject(System.getenv("VCAP_SERVICES"));
-  JSONObject sendgridCredentials = sendgridJson.getJSONArray("SendGridDemo-1.0.0")
+  JSONObject sendgridCredentials = sendgridJson.getJSONArray("sendgrid")
           .getJSONObject(0).getJSONObject("credentials");
-  String username = sendgridCredentials.getString("SENDGRID_USERNAME");
-  String password = sendgridCredentials.getString("SENDGRID_PASSWORD");
+  String username = sendgridCredentials.getString("username");
+  String password = sendgridCredentials.getString("password");
   SendGrid sendgrid = new SendGrid(username, password);
   sendgrid.addTo("example@example.com");
   sendgrid.setFrom("other@example.com");
@@ -170,18 +155,18 @@ catch (Exception e)
 }
 ```
 
-### Pushing your application to SmartCloud
+### Pushing your application to BlueMix
 
 After finished the coding, you can deploy your application to Bluemix environment for verification. To deploy an application, you need to enter into the root directory of the application and use the following command:
 
 ```
-$ cf push
+$ cf push [app-name]
 ```
 
 or for node.js:
 
 ```
-$ cf push --command 'node index.js'
+$ cf push [app-name] --command 'node index.js'
 ```
 
 ### <span style="color: rgb(0,0,0);">Unbinding or deleting a SendGrid service instance</span>
