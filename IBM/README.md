@@ -186,7 +186,7 @@ These applications demonstrate how to connect to our services and insert or retr
 
 ### Related Links
 
-[SendGrid Official Document](http://sendgrid.com/docs/index.html)
+[SendGrid Official Documentation](http://sendgrid.com/docs/index.html)
 
 ### Contact
 
